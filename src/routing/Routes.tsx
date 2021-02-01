@@ -12,7 +12,7 @@ import NotFound from '../pages/NotFound';
 import { AuthContext } from '../context/AuthContext';
 
 const Routes = () => {
-  const { signOut } = useContext(AuthContext);
+  const { user, signOut } = useContext(AuthContext);
   return (
     <>
       <nav>
@@ -20,31 +20,36 @@ const Routes = () => {
           <li>
             <Link to="/">Social Kitchen</Link>
           </li>
-          <li>
-            <Link to="/add">Add recipe</Link>
-          </li>
-          <li>
-            <Link to="/profile">Profile</Link>
-          </li>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
-          <li>
-            <button onClick={() => signOut()}>Logout</button>
-          </li>
+          {user ? (
+            <>
+              <li>
+                <Link to="/add">Add recipe</Link>
+              </li>
+              <li>
+                <Link to="/profile">Profile</Link>
+              </li>
+              <li>
+                <button onClick={() => signOut()}>Logout</button>
+              </li>
+            </>
+          ) : (
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
+          )}
         </ul>
       </nav>
       <Switch>
-          <PublicRoute exact path="/" component={Home} />
-          <PublicRoute path="/login" component={Login} />
-          <PrivateRoute exact path="/recipes" component={Recipes} />
-          <PrivateRoute exact path="/recipes/:id" component={RecipesDetail} />
-          <PrivateRoute path="/add" component={RecipesAdd} />
-          <PrivateRoute path="/profile" component={Profile} />
-          <Route path="*" component={NotFound} />
+        <PublicRoute exact path="/" component={Home} />
+        <PublicRoute path="/login" component={Login} />
+        <PrivateRoute exact path="/recipes" component={Recipes} />
+        <PrivateRoute exact path="/recipes/:id" component={RecipesDetail} />
+        <PrivateRoute path="/add" component={RecipesAdd} />
+        <PrivateRoute path="/profile" component={Profile} />
+        <Route path="*" component={NotFound} />
       </Switch>
     </>
   );
-}
+};
 
 export default Routes;
