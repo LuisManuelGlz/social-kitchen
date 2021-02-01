@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 
-function Login() {
-  return <div>Login</div>;
+const Login = () => {
+  const { googleSignIn } = useContext(AuthContext);
+
+  return (
+    <div>
+      Login
+      <button onClick={() => googleSignIn()}>Google Login</button>
+    </div>
+  );
 }
 
 export default Login;

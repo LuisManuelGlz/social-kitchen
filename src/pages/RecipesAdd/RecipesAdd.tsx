@@ -1,6 +1,6 @@
 import React from 'react';
 
-function RecipesAdd() {
+const RecipesAdd = () => {
   return <div>RecipesAdd</div>;
 }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Switch, Link, Route } from 'react-router-dom';
 import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
@@ -8,19 +8,17 @@ import RecipesDetail from '../pages/RecipesDetail';
 import RecipesAdd from '../pages/RecipesAdd';
 import Profile from '../pages/Profile';
 import Login from '../pages/Login';
-import Register from '../pages/Register';
 import NotFound from '../pages/NotFound';
+import { AuthContext } from '../context/AuthContext';
 
-function Routes() {
+const Routes = () => {
+  const { signOut } = useContext(AuthContext);
   return (
     <>
       <nav>
         <ul>
           <li>
             <Link to="/">Social Kitchen</Link>
-          </li>
-          <li>
-            <Link to="/recipes">Recipes</Link>
           </li>
           <li>
             <Link to="/add">Add recipe</Link>
@@ -32,19 +30,17 @@ function Routes() {
             <Link to="/login">Login</Link>
           </li>
           <li>
-            <Link to="/register">Register</Link>
+            <button onClick={() => signOut()}>Logout</button>
           </li>
         </ul>
       </nav>
       <Switch>
           <PublicRoute exact path="/" component={Home} />
-          <PublicRoute exact path="/recipes" component={Recipes} />
-          <PublicRoute exact path="/recipes/:id" component={RecipesDetail} />
-          <PublicRoute path="/add" component={RecipesAdd} />
-          <PublicRoute path="/profile" component={Profile} />
           <PublicRoute path="/login" component={Login} />
-          <PublicRoute path="/register" component={Register} />
-          {/* <PrivateRoute path="/" component={Box} /> */}
+          <PrivateRoute exact path="/recipes" component={Recipes} />
+          <PrivateRoute exact path="/recipes/:id" component={RecipesDetail} />
+          <PrivateRoute path="/add" component={RecipesAdd} />
+          <PrivateRoute path="/profile" component={Profile} />
           <Route path="*" component={NotFound} />
       </Switch>
     </>

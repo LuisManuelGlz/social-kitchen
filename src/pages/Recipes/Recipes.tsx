@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function Recipes() {
+const Recipes = () => {
   return (
     <div>
       Recipes
