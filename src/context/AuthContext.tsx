@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import firebase from 'firebase';
-import { auth } from '../firebase/config';
+import { auth, firestore } from '../firebase/config';
 
 type AuthContextType = {
   user: firebase.User | null;
@@ -27,7 +27,17 @@ const AuthProvider = ({ children }: Props) => {
   const googleSignIn = async () => {
     try {
       const provider = new firebase.auth.GoogleAuthProvider();
-      await auth.signInWithPopup(provider);
+      const { user } = await auth.signInWithPopup(provider);
+
+      const doc = await firestore.collection('users').doc(user?.uid).get();
+
+      if (!doc.exists) {
+        const { uid: id, displayName, photoURL } = user!;
+        await firestore
+          .collection('users')
+          .doc(user?.uid)
+          .set({ id, displayName, photoURL });
+      }
     } catch (error) {
       console.log(error);
     }

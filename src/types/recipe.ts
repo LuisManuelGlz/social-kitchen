@@ -1,9 +1,10 @@
 type RecipeType = {
   id: string;
   name: string;
+  nameNormalize: string;
   description: string;
-  image: string;
-  video: string;
+  imageURL: string;
+  videoURL: string;
   steps: string[];
   tags: any[];
 };
