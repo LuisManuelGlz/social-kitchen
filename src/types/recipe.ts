@@ -1,3 +1,5 @@
+import UserType from "./user";
+
 type RecipeType = {
   id: string;
   name: string;
@@ -5,8 +7,10 @@ type RecipeType = {
   description: string;
   imageURL: string;
   videoURL: string;
+  ingredients: string[];
   steps: string[];
   tags: any[];
+  user: UserType;
 };
 
 export default RecipeType;

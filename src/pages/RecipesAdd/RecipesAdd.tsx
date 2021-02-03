@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -25,8 +25,8 @@ const RecipesAdd = () => {
     }),
     onSubmit: (values, actions) => {
       actions.resetForm();
-      addRecipe({ ...values, steps: [], tags: [] }).then(() => {
-        history.push('/recipes');
+      addRecipe({ ...values, ingredients: [], steps: [], tags: [] }).then(() => {
+        history.goBack();
       });
     },
   });

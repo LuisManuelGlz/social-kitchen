@@ -1,7 +1,7 @@
 type UserType = {
   id: string;
-  name: string;
-  image: string;
+  displayName: string;
+  photoURL: string;
 };
 
 export default UserType;

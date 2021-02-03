@@ -26,7 +26,7 @@ const Routes = () => {
                 <Link to="/add">Add recipe</Link>
               </li>
               <li>
-                <Link to="/profile">Profile</Link>
+                <Link to={`/profile/${user.uid}`}>Profile</Link>
               </li>
               <li>
                 <button onClick={() => signOut()}>Logout</button>
@@ -45,7 +45,7 @@ const Routes = () => {
         <PrivateRoute exact path="/recipes" component={Recipes} />
         <PrivateRoute exact path="/recipes/:id" component={RecipesDetail} />
         <PrivateRoute path="/add" component={RecipesAdd} />
-        <PrivateRoute path="/profile" component={Profile} />
+        <PrivateRoute path="/profile/:id" component={Profile} />
         <Route path="*" component={NotFound} />
       </Switch>
     </>

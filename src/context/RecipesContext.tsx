@@ -9,6 +9,7 @@ type RecipesContextType = {
   recipes: RecipeType[];
   fetchRecipes: () => Promise<void>;
   fetchRecipe: (id: string) => Promise<RecipeType | null>;
+  fetchRecipesByUserId: (id: string) => Promise<RecipeType[]>;
   addRecipe: (recipe: RecipeAddDto) => Promise<void>;
 };
 
@@ -43,11 +44,29 @@ const RecipesProvider = ({ children }: Props) => {
     }
   };
 
+  const fetchRecipesByUserId = async (id: string) => {
+    const recipesFetched: RecipeType[] = [];
+    try {
+      const querySnapshot = await firestore
+        .collection('recipes')
+        .where('user', '==', id)
+        .get();
+      querySnapshot.forEach(async (doc) => {
+        recipesFetched.push({ id: doc.id, ...doc.data() } as RecipeType);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    return recipesFetched;
+  };
+
   const fetchRecipe = async (id: string) => {
     let recipe = null;
     try {
       const doc = await firestore.collection('recipes').doc(id).get();
-      recipe = { id: doc.id, ...doc.data() } as RecipeType;
+      const userId = (doc.data() as any).user;
+      const user = await firestore.collection('users').doc(userId).get();
+      recipe = { id: doc.id, ...doc.data(), user: user.data() } as RecipeType;
     } catch (error) {
       console.log(error);
     }
@@ -58,6 +77,7 @@ const RecipesProvider = ({ children }: Props) => {
     name,
     description,
     image,
+    ingredients,
     steps,
     tags,
   }: RecipeAddDto) => {
@@ -70,9 +90,10 @@ const RecipesProvider = ({ children }: Props) => {
         nameNormalized: name.toLocaleUpperCase(),
         description,
         imageURL,
+        ingredients,
         steps,
         tags,
-        user: firestore.doc(`users/${user?.uid}`),
+        user: user?.uid,
       };
 
       const docRef = await firestore.collection('recipes').add(recipe);
@@ -92,6 +113,7 @@ const RecipesProvider = ({ children }: Props) => {
         recipes,
         fetchRecipes,
         fetchRecipe,
+        fetchRecipesByUserId,
         addRecipe,
       }}
     >

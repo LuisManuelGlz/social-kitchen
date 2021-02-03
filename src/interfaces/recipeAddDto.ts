@@ -3,6 +3,7 @@ export interface RecipeAddDto {
   description: string;
   image: any;
   videoURL?: string;
+  ingredients: string[];
   steps: string[];
   tags: any[];
 };

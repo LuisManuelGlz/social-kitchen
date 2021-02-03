@@ -23,8 +23,20 @@ const RecipesDetail = () => {
 
   return (
     <div>
+      <div>{recipe?.user.displayName}</div>
+      <div>{recipe?.user.photoURL}</div>
       <div>{recipe?.name}</div>
       <div>{recipe?.description}</div>
+      <ul>
+        {recipe?.tags.map((tag, index) => (
+          <li key={index}>{tag}</li>
+        ))}
+      </ul>
+      <ul>
+        {recipe?.ingredients.map((ingredient, index) => (
+          <li key={index}>{ingredient}</li>
+        ))}
+      </ul>
       <ul>
         {recipe?.steps.map((step, index) => (
           <li key={index}>{step}</li>
